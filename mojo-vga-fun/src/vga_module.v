@@ -277,9 +277,9 @@ assign charset[15] = {
 wire cg = (chargen_out);
 wire blank = (CounterX < 144*2);
 wire [7:0] en = {~blank, ~blank, ~blank, ~blank, ~blank, ~blank, ~blank, ~blank};
-assign red[7:0] = {cg, cg, cg, cg, cg, cg, cg, cg};// & ({frame_count[8:5], 2'b0000}) & en;
-assign green[7:0] = (CounterX[8:1] + frame_count[17:10])& en;
-assign blue[7:0] = (CounterY[7:0] - frame_count[23:16])& en;
+assign red[7:0] = ((frame_count[16])?{cg, cg, cg, cg, cg, cg, cg, cg} : CounterY[7:0])& en ;
+assign green[7:0] = ((frame_count[16])?(CounterX[8:1] + frame_count[17:10]) : CounterY[7:0]*3)& en ;
+assign blue[7:0] = ((frame_count[16])?(CounterY[7:0] - frame_count[23:16]) : CounterY[7:0]*5)& en;
 
 reg chargen_out;
 reg [3:0] col_cnt, row_cnt;
